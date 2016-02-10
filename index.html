@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>使用模拟退火的思路寻找全局最优解</title>
+	<style type="text/css">
+	#graph{
+		display: block;
+		margin: 0 auto;
+	}
+	.findBest{
+		margin: 20px auto;
+		width: 100px;
+		height: 20px;
+		text-align: center;
+		line-height: 20px;
+		background-color: lightgreen;
+		cursor:pointer;
+	}
+	#degree{
+		display: block;
+		margin: 10px auto;
+		width: 100px;
+		border: 1px solid #eee;
+		border-radius: 0px;
+	}
+	</style>
+</head>
+<body>
+	<canvas id="graph" width="1200px" height="600px"></canvas>
+	<input type="text" id="degree" placeholder="请输入搜索次数">
+	<div class="findBest" onclick="findBest()">开始搜索</div>
+	<script src="main.js"></script>
+</body>
+</html>
