@@ -36,7 +36,7 @@ function getY(x){
 			break;
 
 		default:
-			y = x;
+			y = 0;
 			break;
 	}
 	return y;
@@ -51,6 +51,8 @@ function getGlobalMax(degreeTime){
 	var length = xMax-xMin;
 	var degree = (xMax - xMin)/degreeTime;
 	for(var i=0;i<degreeTime;i++){
+		// 重画图表
+		drawGraph();
 		var yNow = getY(xNow);
 		if(yNow>ySave){
 			ySave = yNow;
@@ -73,19 +75,43 @@ function getGlobalMax(degreeTime){
 			}
 		}
 	}
-	var location = [xSave,ySave];
-
+	// 在这里用梯度下降算法求出全剧最优解
+	var go = true;
+	xNow = Math.floor(xNow);
+	yNow = getY(xNow);
+	while(go){
+		var diff = getY(xNow-1) - getY(xNow+1);
+		// 左面比较大向左跳
+		if(diff>0){
+			xNow -= 1;
+			xSave = xNow;
+			ySave = getY(xNow);
+		}
+		// 右边比较大向右跳
+		else if(diff<0){
+			xNow += 1;
+			xSave = xNow;
+			ySave = getY(xNow);
+		}
+		// 两边一样大，结束
+		else{
+			go = false;
+		}
+		console.log(diff);
+	}
 	// 在图上画出最优解的位置
 	// 画图前的准备
 
 	var drawing = document.getElementById('graph');
 	var ctx = drawing.getContext('2d');
-
 	ctx.beginPath();
 	ctx.fillStyle = "red";
     ctx.arc(20+zoomX*xSave,580-zoomY*ySave,10,0,Math.PI*2,true);
     ctx.fill();
     ctx.fillText('['+xSave.toFixed(2)+','+ySave.toFixed(2)+']', 35+zoomX*xSave,580-zoomY*ySave);
+	ctx.fillStyle = "black";
+	var location = [xSave,ySave];
+
 	return location;
 }
 // 画图表
@@ -93,7 +119,8 @@ function drawGraph(){
 	// 画图前的准备
 	var drawing = document.getElementById('graph');
 	var ctx = drawing.getContext('2d');
-
+	// 全部清空
+	ctx.clearRect(0,0,1200,600);
 	// 画两个坐标轴
     ctx.beginPath();
     ctx.moveTo(20,20);
