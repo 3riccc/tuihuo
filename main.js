@@ -57,9 +57,20 @@ function getGlobalMax(degreeTime){
 			xSave = xNow;
 		}
 		if(xNow + length-(degree*i)>xMax){
-			xNow = xNow -(degree*i);
+			// 如果向右跳一步比向左跳一步升高的多
+			if(getY(xNow-(degree*i))>getY(xNow-length+(degree*i))){
+				// 向右跳一步
+				xNow = xNow -(degree*i);
+			}else{
+				// 向左跳一步
+				xNow = xNow-length+(degree*i);
+			}
 		}else{
-			xNow = xNow+length-(degree*i);
+			if(getY(xNow+length-(degree*i))>getY(xNow+length+length-(degree*i))){
+				xNow = xNow+length-(degree*i);
+			}else{
+				xNow = xNow + length + length - (degree*i);
+			}
 		}
 	}
 	var location = [xSave,ySave];
